@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const Home = () => {
   const [clickCount, setClickCount] = useState(0);
   const [lastClickTime, setLastClickTime] = useState(0);
+  const [easterEggsFound, setEasterEggsFound] = useState([]);
   
   // Using a ref for typedKeys ensures the buffer persists correctly through any React re-renders
   const typedKeys = useRef('');
@@ -28,6 +29,10 @@ const Home = () => {
         if (typedKeys.current === magicWord) {
           console.log("[Easter Egg Debug] Match found! Toggling Tokyo Night.");
           document.body.classList.toggle('tokyo-night');
+          setEasterEggsFound(prev => {
+            if (prev.includes('evolve')) return prev;
+            return [...prev, 'evolve'];
+          });
           typedKeys.current = ''; // Reset after triggering
         }
       } else {
@@ -64,6 +69,7 @@ const Home = () => {
                -------
       WOOF! You found Snoopy. Keep hacking the planet!
       `);
+      setEasterEggsFound(prev => prev.includes('snoopy') ? prev : [...prev, 'snoopy']);
       currentClicks = 0; 
     }
     setClickCount(currentClicks);
@@ -72,9 +78,37 @@ const Home = () => {
 
   return (
     <div className="home-container page">
+      <div 
+        className="easter-egg-pill" 
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          backgroundColor: 'var(--accent-purple)',
+          color: 'var(--bg-black)',
+          padding: '10px 20px',
+          borderRadius: '50px',
+          fontWeight: 'bold',
+          cursor: easterEggsFound.length >= 2 ? 'pointer' : 'default',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+          transition: 'all 0.3s ease',
+          zIndex: 1000
+        }}
+        onClick={() => {
+          if (easterEggsFound.length >= 2) {
+            window.location.href = 'https://linkedin.com/in/atharv-garg';
+          }
+        }}
+      >
+        {easterEggsFound.length === 0 
+          ? "Find easter eggs" 
+          : easterEggsFound.length === 1 
+            ? "1/2" 
+            : "unlock my life"}
+      </div>
       <header className="home-header neo-box">
         <div className="profile-wrapper neo-box" onClick={handleProfileClick} title="Profile Picture (Click me!)">
-          <img src="/ascii-fied.jpg" alt="Profile" className="profile-pic" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+          <img src={process.env.PUBLIC_URL + '/ascii-fied.jpg'} alt="Profile" className="profile-pic" style={{ width: '100%', height: 'auto', maxHeight: '200px', objectFit: 'contain' }} />
         </div>
         <div className="personal-details">
           <h1 className="name neo-title">Atharv Ashish Garg</h1>
@@ -134,7 +168,7 @@ const Home = () => {
             <h2>Education</h2>
             <ul className="timeline">
               <li><strong>Summer School on AI</strong> - IIIT Hyderabad (<em>07/2025</em>)</li>
-              <li><strong>B.Tech in CSE</strong> - Mahindra University (<em>08/2023 - Present</em>) - CGPA: 8.00/10.00</li>
+              <li><strong>B.Tech in CSE</strong> - Mahindra University (<em>08/2023 - Present</em>) - CGPA: 8.10/10.00</li>
               <li><strong>A Levels</strong> - JBCN International School (<em>03/2021 - 06/2023</em>)</li>
             </ul>
           </section>
