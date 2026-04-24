@@ -74,7 +74,7 @@ const Home = () => {
     <div className="home-container page">
       <header className="home-header neo-box">
         <div className="profile-wrapper neo-box" onClick={handleProfileClick} title="Profile Picture (Click me!)">
-          <div className="profile-pic">AAG</div>
+          <img src="/ascii-fied.jpg" alt="Profile" className="profile-pic" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
         </div>
         <div className="personal-details">
           <h1 className="name neo-title">Atharv Ashish Garg</h1>
